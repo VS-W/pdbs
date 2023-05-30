@@ -41,6 +41,7 @@ async def handle_client(reader, writer):
 	try:
 		await writer.drain()
 		if len(response.strip()) > 0:
+			print(request)
 			await send_message(f'Server: {request}')
 	except ConnectionResetError:
 		pass
@@ -57,5 +58,5 @@ async def main():
 	discordbot = loop.create_task(client.start(TOKEN))
 	await asyncio.wait([socketserver, discordbot])
 
-print(f'INIT:\nCHANNEL_ID: {TARGET_CHANNEL_ID}\nSERVER_HOST: {SERVER_HOST}\nSERVER_PORT: {SERVER_PORT}')
+print(f'INIT:\n\tCHANNEL_ID: {TARGET_CHANNEL_ID}\n\tSERVER_PORT: {SERVER_PORT}')
 asyncio.run(main())
