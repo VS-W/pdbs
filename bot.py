@@ -36,8 +36,7 @@ async def send_message(message):
 
 async def send_file(file):
 	channel = client.get_channel(TARGET_CHANNEL_ID)
-	embed = discord.Embed()
-	await channel.send(embed=embed, file=discord.File(file))
+	await channel.send(file=discord.File(file))
 
 async def handle_client(reader, writer):
 	request = None
