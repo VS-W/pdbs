@@ -42,7 +42,10 @@ async def handle_client(reader, writer):
 		await writer.drain()
 		if len(response.strip()) > 0:
 			print(request)
-			await send_message(f'Server: {request}')
+			if "file:" in request[:5]:
+				file = request[5:]
+				print(f'Sending contents of file: {file}')
+			# await send_message(f'Server: {request}')
 	except ConnectionResetError:
 		pass
 	writer.close()
