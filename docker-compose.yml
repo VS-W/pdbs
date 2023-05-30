@@ -1,0 +1,15 @@
+version: "3"
+services:
+  dsc-status-bot:
+    build:
+      context: .
+      args:
+        USER_ID: 1000
+        GROUP_ID: 1000
+    volumes:
+      - .:/app
+    ports:
+      - "5999:5999"
+    environment:
+      DISCORD_TOKEN: "token_here"
+    restart: always
