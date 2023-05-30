@@ -34,6 +34,10 @@ async def send_message(message):
 	channel = client.get_channel(TARGET_CHANNEL_ID)
 	await channel.send(message)
 
+async def send_file(file):
+	channel = client.get_channel(TARGET_CHANNEL_ID)
+	await channel.send(file=discord.File(file))
+
 async def handle_client(reader, writer):
 	request = None
 	request = (await reader.read(1024)).decode('utf8')
@@ -46,12 +50,12 @@ async def handle_client(reader, writer):
 			if "file:" in request[:5]:
 				file = request[5:].strip()
 				print(f'Sending contents of file: {file}')
-				path = Path.cwd() / str(file)
-				with path.open(mode="r", encoding="utf-8") as input_file:
-					request = input_file.read()
-				print(f'Sending contents of file: {request}')
-				print(request)
-				await send_message(f'Server: ```{request}```')
+				await send_file(file)
+				# path = Path.cwd() / str(file)
+				# with path.open(mode="r", encoding="utf-8") as input_file:
+				# 	request = input_file.read()
+				# print(request)
+				# await send_message(f'Server: ```{request}```')
 			await send_message(f'Server: {request}')
 	except ConnectionResetError:
 		pass
