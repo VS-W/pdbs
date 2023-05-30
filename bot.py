@@ -1,4 +1,5 @@
 import os, json, asyncio, multiprocessing, socket
+from pathlib import Path
 import discord
 
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -43,8 +44,13 @@ async def handle_client(reader, writer):
 		if len(response.strip()) > 0:
 			print(request)
 			if "file:" in request[:5]:
-				file = request[5:]
+				file = request[5:].strip()
 				print(f'Sending contents of file: {file}')
+				path = Path.cwd() / str(file)
+				with path.open(mode="r", encoding="utf-8") as input_file:
+					request = input_file.read()
+				print(f'Sending contents of file: {request}')
+				print(request)
 			# await send_message(f'Server: {request}')
 	except ConnectionResetError:
 		pass
