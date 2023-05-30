@@ -35,17 +35,16 @@ async def send_message(message):
 
 async def handle_client(reader, writer):
 	request = None
-	while True:
-		request = (await reader.read(1024)).decode('utf8')
-		response = str(request)
-		writer.write(response.encode('utf8'))
-		try:
-			await writer.drain()
-			if len(response.strip()) > 0:
-				await send_message(f'Server: {request}')
-		except ConnectionResetError:
-			pass
-		writer.close()
+	request = (await reader.read(1024)).decode('utf8')
+	response = str(request)
+	writer.write(response.encode('utf8'))
+	try:
+		await writer.drain()
+		if len(response.strip()) > 0:
+			await send_message(f'Server: {request}')
+	except ConnectionResetError:
+		pass
+	writer.close()
 
 async def run_server():
 	server = await asyncio.start_server(handle_client, SERVER_HOST, SERVER_PORT)
@@ -58,4 +57,5 @@ async def main():
 	discordbot = loop.create_task(client.start(TOKEN))
 	await asyncio.wait([socketserver, discordbot])
 
+print(f'INIT:\nCHANNEL_ID: {TARGET_CHANNEL_ID}\nSERVER_HOST: {SERVER_HOST}\nSERVER_PORT: {SERVER_PORT}')
 asyncio.run(main())
