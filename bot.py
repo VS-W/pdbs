@@ -3,6 +3,8 @@ import discord
 
 TOKEN = os.getenv('DISCORD_TOKEN')
 TARGET_CHANNEL_ID = int(os.getenv('DISCORD_TARGET_CHANNEL_ID'))
+SERVER_HOST = 'localhost'
+SERVER_PORT = int(os.getenv('SERVER_PORT'))
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -37,12 +39,16 @@ async def handle_client(reader, writer):
 		request = (await reader.read(1024)).decode('utf8')
 		response = str(request)
 		writer.write(response.encode('utf8'))
-		await writer.drain()
-		await send_message(f'Server: {request}')
-	writer.close()
+		try:
+			await writer.drain()
+			if len(response.strip()) > 0:
+				await send_message(f'Server: {request}')
+		except ConnectionResetError:
+			pass
+		writer.close()
 
 async def run_server():
-	server = await asyncio.start_server(handle_client, 'localhost', 5999)
+	server = await asyncio.start_server(handle_client, SERVER_HOST, SERVER_PORT)
 	async with server:
 		await server.serve_forever()
 

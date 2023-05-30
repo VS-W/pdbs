@@ -12,4 +12,6 @@ services:
       - "5999:5999"
     environment:
       DISCORD_TOKEN: "token_here"
+      DISCORD_TARGET_CHANNEL_ID: "channel_id_here"
+      SERVER_PORT: "5999"
     restart: always

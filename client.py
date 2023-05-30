@@ -1,20 +1,19 @@
-import socket
+from socket import socket
+from sys import argv
 
-def client_program():
+if len(argv) > 0:
     host = 'localhost'
     port = 5999
-    client_socket = socket.socket()
+    client_socket = socket()
     client_socket.connect((host, port))
+    print(f'Connecting to {host}:{port}...')
 
-    message = input("> ")
-
-    while message.lower().strip() != 'bye':
-        client_socket.send(message.encode())
-        data = client_socket.recv(1024).decode()
-        print('Received from server: ' + data)
-
-        message = input("> ")
+    for i, arg in enumerate(argv[1:]):
+        print(f'Argument {i}: {arg}')
+        message = arg.strip().encode()
+        if len(message) > 0:
+            client_socket.send(message)
+            data = client_socket.recv(1024).decode()
+            print(f'Server: {data}')
 
     client_socket.close()
-
-client_program()
