@@ -3,7 +3,7 @@ import discord
 
 TOKEN = os.getenv('DISCORD_TOKEN')
 TARGET_CHANNEL_ID = int(os.getenv('DISCORD_TARGET_CHANNEL_ID'))
-SERVER_HOST = 'localhost'
+SERVER_HOST = '0.0.0.0'
 SERVER_PORT = int(os.getenv('SERVER_PORT'))
 
 intents = discord.Intents.default()

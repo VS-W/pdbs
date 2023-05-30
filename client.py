@@ -2,7 +2,7 @@ from socket import socket
 from sys import argv
 
 if len(argv) > 0:
-    host = 'localhost'
+    host = '127.0.0.1'
     port = 5999
     client_socket = socket()
     client_socket.connect((host, port))
