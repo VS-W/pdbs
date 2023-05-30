@@ -51,7 +51,8 @@ async def handle_client(reader, writer):
 					request = input_file.read()
 				print(f'Sending contents of file: {request}')
 				print(request)
-			# await send_message(f'Server: {request}')
+				await send_message(f'Server: ```{request}```')
+			await send_message(f'Server: {request}')
 	except ConnectionResetError:
 		pass
 	writer.close()
