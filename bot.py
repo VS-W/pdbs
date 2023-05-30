@@ -47,16 +47,11 @@ async def handle_client(reader, writer):
 		await writer.drain()
 		if len(response.strip()) > 0:
 			print(request)
+			await send_message(f'Server: {request}')
 			if "file:" in request[:5]:
 				file = request[5:].strip()
 				print(f'Sending contents of file: {file}')
 				await send_file(file)
-				# path = Path.cwd() / str(file)
-				# with path.open(mode="r", encoding="utf-8") as input_file:
-				# 	request = input_file.read()
-				# print(request)
-				# await send_message(f'Server: ```{request}```')
-			await send_message(f'Server: {request}')
 	except ConnectionResetError:
 		pass
 	writer.close()
