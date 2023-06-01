@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "5999:5999"
+      - "127.0.0.1:5999:5999"
     environment:
       PYTHONUNBUFFERED: 1
       DISCORD_TOKEN: "token_here"
