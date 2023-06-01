@@ -8,12 +8,9 @@ if len(argv) > 0:
     client_socket.connect((host, port))
     print(f'Connecting to {host}:{port}...')
 
-    for i, arg in enumerate(argv[1:]):
-        print(f'Argument {i}: {arg}')
-        message = arg.strip().encode()
-        if len(message) > 0:
-            client_socket.send(message)
-            data = client_socket.recv(1024).decode()
-            print(f'Server: {data}')
+    message = argv[1].strip().encode()
+    if len(message) > 0:
+        print(f'Sending: {message.decode()}')
+        client_socket.send(message)
 
     client_socket.close()

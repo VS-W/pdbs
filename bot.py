@@ -41,20 +41,16 @@ async def send_file(file):
 async def handle_client(reader, writer):
 	request = None
 	request = (await reader.read(1024)).decode('utf8')
-	response = str(request)
-	writer.write(response.encode('utf8'))
-	try:
-		await writer.drain()
-		if len(response.strip()) > 0:
-			print(request)
-			await send_message(f'> {request}')
-			if "file:" in request[:5]:
-				file = request[5:].strip()
-				print(f'Sending contents of file: {file}')
-				await send_file(file)
-	except ConnectionResetError:
-		pass
-	writer.close()
+	request = str(request)
+	if len(request.strip()) > 0:
+		print(request)
+		with open("requests.log", "a") as f:
+			f.write(f'{request}\n')
+		await send_message(f'> {request}')
+		if "file:" in request[:5]:
+			file = request[5:].strip()
+			print(f'Sending contents of file: {file}')
+			await send_file(file)
 
 async def run_server():
 	server = await asyncio.start_server(handle_client, SERVER_HOST, SERVER_PORT)
