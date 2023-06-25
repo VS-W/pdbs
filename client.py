@@ -8,7 +8,7 @@ if len(argv) > 0:
     client_socket.connect((host, port))
     print(f'Connecting to {host}:{port}...')
 
-    message = argv[1].strip().encode()
+    message = " ".join(argv[1:]).strip().encode()
     if len(message) > 0:
         print(f'Sending: {message.decode()}')
         client_socket.send(message)
